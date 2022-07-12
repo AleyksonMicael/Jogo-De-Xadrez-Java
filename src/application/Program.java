@@ -5,7 +5,6 @@ import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
 
-import java.lang.ref.Cleaner;
 import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
@@ -17,13 +16,18 @@ public class Program {
         ChessMatch chessMatch = new ChessMatch();
         while (true) {
             try {
-                Ui.clearScreen();
-                Ui.printBoard(chessMatch.getPieces());
+                UI.clearScreen();
+                UI.printBoard(chessMatch.getPieces());
                 System.out.println();
                 System.out.print("Peça: ");
-                ChessPosition source = Ui.readChessPosition(sc);
+                ChessPosition source = UI.readChessPosition(sc);
+
+
+                boolean[][] possibleMoves = chessMatch.possibleMoves(source);
+                UI.clearScreen();
+                UI.printBoard(chessMatch.getPieces(), possibleMoves);
                 System.out.print("Destino: ");
-                ChessPosition target = Ui.readChessPosition(sc);
+                ChessPosition target = UI.readChessPosition(sc);
 
                 ChessPiece capturedPiece = chessMatch.performChessMove(source, target);
             } catch (ChessException e) {

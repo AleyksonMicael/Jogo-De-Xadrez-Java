@@ -7,7 +7,7 @@ import chess.Color;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Ui {
+public class UI {
 
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_BLACK = "\u001B[30m";
@@ -51,7 +51,7 @@ public class Ui {
         for (int i=0; i<pieces.length; i++){
             System.out.print("   "+(8 - i) + " | ");
             for (int j=0; j<pieces.length; j++){
-                printPiece(pieces[i][j]);
+                printPiece(pieces[i][j], false);
             }
             System.out.println("|");
         }
@@ -60,9 +60,26 @@ public class Ui {
         System.out.println("       A  B  C  D  E  F  G  H");
 
     }
-    private static void printPiece(ChessPiece piece){
+    public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
+        System.out.println("               XADREZ           ");
+        System.out.println("     ┌—————————————————————————┐");
+        for (int i = 0; i < pieces.length; i++) {
+            System.out.print("   "+(8 - i) + " | ");
+            for (int j = 0; j < pieces.length; j++) {
+                printPiece(pieces[i][j], possibleMoves[i][j]);
+            }
+            System.out.println("|");
+        }
+        System.out.println("     └—————————————————————————┘");
+        System.out.println("       A  B  C  D  E  F  G  H");
+    }
+
+    private static void printPiece(ChessPiece piece, boolean background) {
+        if (background) {
+            System.out.print(ANSI_BLUE_BACKGROUND);
+        }
         if (piece == null) {
-            System.out.print("-");
+            System.out.print("-" + ANSI_RESET);
         }
         else {
             if (piece.getColor() == Color.WHITE) {
