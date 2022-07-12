@@ -1,10 +1,12 @@
 package application;
 
+import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
 import chess.Color;
 
 import java.util.InputMismatchException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class UI {
@@ -33,24 +35,30 @@ public class UI {
         System.out.flush();
     }
 
-    public static ChessPosition readChessPosition (Scanner sc){
+    public static ChessPosition readChessPosition(Scanner sc) {
         try {
-            String s = sc.nextLine();
+            String s = sc.nextLine().toLowerCase(Locale.ROOT);
             char column = s.charAt(0);
             int row = Integer.parseInt(s.substring(1));
             return new ChessPosition(column, row);
-        }
-        catch (RuntimeException e){
-            throw new InputMismatchException("Erro de posição: Apenas posições de A-H e 1-8!");
+        } catch (RuntimeException e) {
+            throw new InputMismatchException("Apenas posições de A-H e 1-8!");
         }
     }
 
-    public static void printBoard(ChessPiece[][] pieces){
+    public static void printMatch(ChessMatch chessMatch) {
+        printBoard(chessMatch.getPieces());
+        System.out.println();
+        System.out.println("Turno : " + chessMatch.getTurn());
+        System.out.println("Esperando jogador: " + chessMatch.getCurrentPlayer());
+    }
+
+    public static void printBoard(ChessPiece[][] pieces) {
         System.out.println("               XADREZ           ");
         System.out.println("     ┌—————————————————————————┐");
-        for (int i=0; i<pieces.length; i++){
-            System.out.print("   "+(8 - i) + " | ");
-            for (int j=0; j<pieces.length; j++){
+        for (int i = 0; i < pieces.length; i++) {
+            System.out.print("   " + (8 - i) + " | ");
+            for (int j = 0; j < pieces.length; j++) {
                 printPiece(pieces[i][j], false);
             }
             System.out.println("|");
@@ -60,11 +68,12 @@ public class UI {
         System.out.println("       A  B  C  D  E  F  G  H");
 
     }
+
     public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
         System.out.println("               XADREZ           ");
         System.out.println("     ┌—————————————————————————┐");
         for (int i = 0; i < pieces.length; i++) {
-            System.out.print("   "+(8 - i) + " | ");
+            System.out.print("   " + (8 - i) + " | ");
             for (int j = 0; j < pieces.length; j++) {
                 printPiece(pieces[i][j], possibleMoves[i][j]);
             }
@@ -80,12 +89,10 @@ public class UI {
         }
         if (piece == null) {
             System.out.print("-" + ANSI_RESET);
-        }
-        else {
-            if (piece.getColor() == Color.WHITE) {
+        } else {
+            if (piece.getColor() == Color.JOGADOR_BRANCO) {
                 System.out.print(ANSI_WHITE + piece + ANSI_RESET);
-            }
-            else {
+            } else {
                 System.out.print(ANSI_YELLOW + piece + ANSI_RESET);
             }
         }
