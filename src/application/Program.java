@@ -33,6 +33,11 @@ public class Program {
 
                 if (capturedPiece != null) {
                     captured.add(capturedPiece);
+                if (chessMatch.getPromoted() != null) {
+                        System.out.print("Escolha uma peça a ser promovida (B/C/T/Q): ");
+                        String type = sc.nextLine().toLowerCase(Locale.ROOT);
+                        chessMatch.replacePromotedPiece(type);
+                    }
                 }
             } catch (ChessException e) {
                 System.out.println(e.getMessage());
